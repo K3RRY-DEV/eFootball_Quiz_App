@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.TOKEN_SECRET || "supersecret";
+// const JWT_SECRET = process.env.JWT_SECRET  || "supersecret";
 
 interface JwtPayload {
   username: string;
@@ -30,7 +30,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
     req.user = decoded; // attach user info to request
     next();
   } catch (err) {

@@ -1,9 +1,14 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import authRoutes from './routes/auth';
 import dashboardRoutes from './routes/dashboard';
 import questionRoutes from './routes/questionRoutes';
+import quizRoutes from './routes/quizRoutes';
+import resultsRoutes from './routes/resultsRoutes'
+import leaderboardRoutes from './routes/leaderboardRoutes';
+
 
 dotenv.config();   //Loads .env variables
 
@@ -14,10 +19,18 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors({ 
+  origin: "http://localhost:3000", 
+  credentials: true 
+}));
 
 app.use('/api/auth', authRoutes);
 app.use('/api', dashboardRoutes);
 app.use('/api', questionRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/my', resultsRoutes);
+app.use('/api/results', leaderboardRoutes);
+
 
 //Example route
 app.get('/', (req, res) => {
